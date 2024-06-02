@@ -26,7 +26,7 @@ const Map = ({ eventData, center, zoom, options, eventOptions, offline }) => {
   return (
     <div className={styles.map}>
       <GoogleMap
-        apiKey={offline ? "" : "AIzaSyAuAbMfiQHFKAqWC_UcLjJ_Hdxv0OACAVo"}
+        apiKey={offline ? "" : process.env.G_Maps_API} 
         center={center}
         defaultCenter={center}
         defaultZoom={zoom}
