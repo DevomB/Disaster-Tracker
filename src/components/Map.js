@@ -8,16 +8,16 @@ const Map = ({ eventData, center, zoom, options, eventOptions, offline }) => {
   const [locationInfo, setLocationInfo] = useState(null);
 
   const markers = eventData
-    .filter((ev) => {
-      return eventOptions[ev.categories[0].id];
-    })
+    .filter((ev) => eventOptions[ev.categories[0]?.id])
     .map((ev, index) => {
+      const { coordinates } = ev.geometry[0];
+      const [lng, lat] = coordinates;
       return (
         <LocationMarker
           key={index}
-          lat={ev.geometry[0].coordinates[1]}
-          lng={ev.geometry[0].coordinates[0]}
-          type={ev.categories[0].title}
+          lat={lat}
+          lng={lng}
+          type={ev.categories[0]?.title}
           onClick={() => setLocationInfo({ id: ev.id, title: ev.title })}
         />
       );
@@ -26,7 +26,7 @@ const Map = ({ eventData, center, zoom, options, eventOptions, offline }) => {
   return (
     <div className={styles.map}>
       <GoogleMap
-        apiKey={offline ? "" : process.env.G_Maps_API} 
+        apiKey={offline ? "" : process.env.NEXT_PUBLIC_G_MAPS_API} // Ensure the correct environment variable
         center={center}
         defaultCenter={center}
         defaultZoom={zoom}
@@ -34,7 +34,7 @@ const Map = ({ eventData, center, zoom, options, eventOptions, offline }) => {
       >
         {markers}
       </GoogleMap>
-      {/* {locationInfo && <LocationInfoBox info={locationInfo} />} */}
+      {locationInfo && <LocationInfoBox info={locationInfo} />} {/* Conditional rendering */}
     </div>
   );
 };
